@@ -1,0 +1,72 @@
+echo 1 Starting Docker Tests
+
+curl -s -X GET -H 'Accept: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/
+
+echo 2 List All Containers
+curl -s -X GET -H 'Accept: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers | python -mjson.tool
+
+echo 3 List Running Containers
+
+curl -s -X GET -H 'Accept: application/json' ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers?state=running | python -mjson.tool
+
+echo 4 Inspect specific container
+
+curl -s -X GET -H 'Accept: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers/3b49a09ede14 | python -mjson.tool
+
+echo 5 Delete a specific Container
+
+#curl -s -X DELETE -H 'Accept: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers/<contID> | python -mjson.tool
+
+echo 6 Force Removing all containers
+
+#curl -s -X DELETE -H 'Accept: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containersDel | python -mjson.tool
+
+
+echo 7 Create Container from existing image
+
+curl -X POST -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers -d '{"image": "lab6"}' | python -mjson.tool
+
+curl -X POST -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers -d '{"image": "745e3735483a"}' | python -mjson.tool
+
+curl -X POST -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers -d '{"image": "745e3735483a","publish":"8081:22"}' | python -mjson.tool
+
+echo 8 Restarting a container 
+
+curl -X PATCH -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers/3b49a09ede14 -d '{"state": "stopped"}'
+
+curl -X PATCH -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers/3b49a09ede14 -d '{"state": "running"}'
+
+echo 9 Stopping a container
+
+curl -X PATCH -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers/3b49a09ede14 -d '{"state": "stopped"}'
+
+echo 10 Dump Specific Container logs
+
+curl -s -X GET -H 'Accept:application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers/3b49a09ede14/logs | python -mjson.tool
+
+
+
+echo 11 List All Images
+
+curl -s -X GET -H 'Accept: application/json' http://ec2-54-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers | python -mjson.tool
+
+curl -s -X GET -H 'Accept: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers?state=running | python -mjson.tool
+
+echo 12 delete an image
+
+#curl -s -X DELETE -H 'Accept: application/json' http://ec2-54-173-217-212.compute-1.amazonaws.com:8080/images/<imgID> | python -mjson.tool
+
+echo 13 Force Removing all images
+
+#curl -s -X DELETE -H 'Accept: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/imagesDel | python -mjson.tool
+
+
+echo 15 Creating image from uploaded Dockerfile
+
+ curl -X POST -H 'Accept: application/json' -F file=@Dockerfile http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/images | python -mjson.tool
+
+echo 14 Tag an Image
+
+curl -s -X PATCH -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/images/745e3735483a -d '{"tag": "test:1.0"}'
+
+echo END HERE  
