@@ -37,8 +37,8 @@ def containers_index():
     """
     List all containers
  
-    curl -s -X GET -H 'Accept: application/json' ec2-54-173-217-212.compute-1.amazonaws.com:8080/containers | python -mjson.toolv
-    curl -s -X GET -H 'Accept: application/json' ec2-54-173-217-212.compute-1.amazonaws.com:8080/containers?state=running | python -mjson.tool
+    curl -s -X GET -H 'Accept: application/json' ec2.compute.amazonaws.com:8080/containers | python -mjson.toolv
+    curl -s -X GET -H 'Accept: application/json' ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers?state=running | python -mjson.tool
 
     """
     if request.args.get('state') == 'running':
@@ -185,7 +185,7 @@ def images_create():
     file = body['file']
     dockerfile = request.files['file']
    
-    args = ('build','--rm=true','-f','Dockerfile','.')
+    args = ('build','--rm=true','-f','~/Jamal_Docker_build/mydockerbuild/Lab8and9/Dockerfile','.')
     docker(*(args))
     resp = ''
     return Response(response=resp, mimetype="application/json")
@@ -195,7 +195,7 @@ def containers_update(id):
     """
     Update container attributes (support: state=running|stopped)
 
-    curl -X PATCH -H 'Content-Type: application/json' http://ec2-54-173-217-212.compute-1.amazonaws.com:8080/containers/b6cd8ea512c8 -d '{"state": "running"}'
+    curl -X PATCH -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers/b6cd8ea512c8 -d '{"state": "running"}'
     curl -X PATCH -H 'Content-Type: application/json' http://ec2-54-173-217-212.compute-1.amazonaws.com:8080/containers/b6cd8ea512c8 -d '{"state": "stopped"}'
 
     """
@@ -217,7 +217,7 @@ def images_update(id):
     """
     Update image attributes (support: name[:tag])  tag name should be lowercase only
 
-    curl -s -X PATCH -H 'Content-Type: application/json' http://ec2-54-173-217-212.compute-1.amazonaws.com:8080/images/d7e52e156daf -d '{"tag": "test:1.0"}'
+    curl -s -X PATCH -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/images/d7e52e156daf -d '{"tag": "test:1.0"}'
 
     """
     
