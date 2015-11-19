@@ -37,8 +37,13 @@ def containers_index():
     """
     List all containers
  
+<<<<<<< HEAD
     curl -s -X GET -H 'Accept: application/json' ec2.compute.amazonaws.com:8080/containers | python -mjson.toolv
     curl -s -X GET -H 'Accept: application/json' ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers?state=running | python -mjson.tool
+=======
+    curl -s -X GET -H 'Accept: application/json' ec2-54-173-217-212.compute-1.amazonaws.com:8080/containers | python -mjson.toolv
+    curl -s -X GET -H 'Accept: application/json' ec2-54-173-217-212.compute-1.amazonaws.com:8080/containers?state=running | python -mjson.tool
+>>>>>>> 764ba4bae8deb8ffa4e62ef7e40380db6e6d778b
 
     """
     if request.args.get('state') == 'running':
@@ -92,7 +97,11 @@ def containers_log(id):
     else:
         output = docker('logs',id)
     resp = json.dumps(docker_logs_to_object(id,output))
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 764ba4bae8deb8ffa4e62ef7e40380db6e6d778b
     return Response(response=resp, mimetype="application/json")
 
 @app.route('/images/<id>', methods=['DELETE'])
@@ -117,7 +126,11 @@ def containers_remove(id):
     """
     docker ('stop', id)
     docker ('rm', id)
+<<<<<<< HEAD
     resp = '{"id": "%s"}' % id    
+=======
+    resp = '{"id": "%s"}' % id
+>>>>>>> 764ba4bae8deb8ffa4e62ef7e40380db6e6d778b
     return Response(response=resp, mimetype="application/json")
 
 @app.route('/containersDel', methods=['DELETE'])
@@ -130,8 +143,13 @@ def containers_remove_all():
     """
     all = docker_ps_to_array(docker('ps', '-a'))
     for i in all:
+<<<<<<< HEAD
     	docker ('stop',i['id'])
 	docker('rm', i['id'])
+=======
+        docker ('stop',i['id'])
+        docker('rm', i['id'])
+>>>>>>> 764ba4bae8deb8ffa4e62ef7e40380db6e6d778b
     resp = '{"count": "%d"}' %len(all)
     return Response(response=resp, mimetype="application/json")
 
@@ -163,14 +181,23 @@ def containers_create():
     image = body['image']
     args = ('run', '-d')
     try:
+<<<<<<< HEAD
     	publish = body['publish']
     	args = args + ('-p', publish)
     except:
     	pass
+=======
+        publish = body['publish']
+        args = args + ('-p', publish)
+    except:
+        pass
+>>>>>>> 764ba4bae8deb8ffa4e62ef7e40380db6e6d778b
     id = docker(*(args + (image,)))[0:12]
     return Response(response='{"id": "%s"}' % id, mimetype="application/json")
     
     
+
+
 
 
 @app.route('/images', methods=['POST'])
@@ -184,18 +211,30 @@ def images_create():
     body = request.get_json(force=True)
     file = body['file']
     dockerfile = request.files['file']
+<<<<<<< HEAD
    
     args = ('build','--rm=true','-f','~/Jamal_Docker_build/mydockerbuild/Lab8and9/Dockerfile','.')
     docker(*(args))
     resp = ''
     return Response(response=resp, mimetype="application/json")
 
+=======
+
+    args = ('build','--rm=true','-f','Dockerfile','.')
+    docker(*(args))
+    resp = ''
+    return Response(response=resp, mimetype="application/json")
+>>>>>>> 764ba4bae8deb8ffa4e62ef7e40380db6e6d778b
 @app.route('/containers/<id>', methods=['PATCH'])
 def containers_update(id):
     """
     Update container attributes (support: state=running|stopped)
 
+<<<<<<< HEAD
     curl -X PATCH -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/containers/b6cd8ea512c8 -d '{"state": "running"}'
+=======
+    curl -X PATCH -H 'Content-Type: application/json' http://ec2-54-173-217-212.compute-1.amazonaws.com:8080/containers/b6cd8ea512c8 -d '{"state": "running"}'
+>>>>>>> 764ba4bae8deb8ffa4e62ef7e40380db6e6d778b
     curl -X PATCH -H 'Content-Type: application/json' http://ec2-54-173-217-212.compute-1.amazonaws.com:8080/containers/b6cd8ea512c8 -d '{"state": "stopped"}'
 
     """
@@ -217,10 +256,17 @@ def images_update(id):
     """
     Update image attributes (support: name[:tag])  tag name should be lowercase only
 
+<<<<<<< HEAD
     curl -s -X PATCH -H 'Content-Type: application/json' http://ec2-52-30-120-31.eu-west-1.compute.amazonaws.com:8080/images/d7e52e156daf -d '{"tag": "test:1.0"}'
 
     """
     
+=======
+    curl -s -X PATCH -H 'Content-Type: application/json' http://ec2-54-173-217-212.compute-1.amazonaws.com:8080/images/d7e52e156daf -d '{"tag": "test:1.0"}'
+
+    """
+
+>>>>>>> 764ba4bae8deb8ffa4e62ef7e40380db6e6d778b
     body = request.get_json(force=True)
     name = body['tag']
     docker('tag', id, name)
